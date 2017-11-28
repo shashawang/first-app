@@ -18,13 +18,14 @@ router.get('/posts', function(req, res, next) {
 
     res.json({ success: true, postsList: posts });
   });
-})
+});
 
 
 /* GET posts edit page. */
 router.get('/posts/create', function(req, res, next) {
   res.render('create');
 });
+
 
 /* GET homesite lists */
 router.get('/homesite', function(req, res, next) {
@@ -41,3 +42,4 @@ router.get('/posts/show', function (req, res, next) {
 });
 
 module.exports = router;
+

@@ -10,7 +10,7 @@ var bodyParser = require('body-parser');
 
 var page = require('./route.page'); //注册路由和路由文件
 var api = require('./route.api');
-
+var favicons = require('connect-favicons');
 
 var app = express();
 
@@ -24,8 +24,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json()); //第三方中间件；可以在package中找到；
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(favicons(__dirname + '/public/img/icons'));                                                          
 app.use(express.static(path.join(__dirname, 'public')));  //托管静态资源，唯一的express内置中间件
-                                                          
+
 
 app.use('/', page);   //分析路由；挂载到对应id的中间件
 app.use('/api', api);
