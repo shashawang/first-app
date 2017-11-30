@@ -30,12 +30,12 @@ var vm = new Vue({
   },
   methods: {
     submit () {
-    axios.post('/api/posts/create',
+    axios.post('/api/posts/create', //指定处理页面
       {
         title: vm.title,
         content: vm.content
       })
-      .then(function(response) {
+      .then(function(response) {  //这段干嘛，输出字符串json数据？？
         alert(JSON.stringify(response.data));
       })
       .catch(function(err) {

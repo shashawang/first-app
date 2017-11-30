@@ -11,7 +11,8 @@ var bodyParser = require('body-parser');
 var page = require('./route.page'); //注册路由和路由文件
 var api = require('./route.api');
 var favicons = require('connect-favicons');
-
+var express = require('express'),
+ipfilter = require('express-ipfilter').IpFilter; //为啥前面不用var,因为前面是逗号哈哈
 var app = express();
 
 // view engine setup
