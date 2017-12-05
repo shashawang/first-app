@@ -1,8 +1,11 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: red;
+  background: #E6CCA6 url(/images/bg.png);
+  background-color:rgba(0,0,0,0.2); /* IE6和部分IE7内核的浏览器(如QQ浏览器)会读懂，但解析为透明 */
 }
 
 a {
-  color: #00B7FF;
+  color: red;
 }

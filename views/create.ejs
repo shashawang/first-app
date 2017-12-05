@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/vue/2.4.4/vue.min.js"></script>
-    <script src="https://cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
-  </head>
-  <body>
-    <div id="app">
+
+        <div class="col-md-8 col-md-offset-2">
       <h1>新建文章</h1>
       <div class="form-group">
         <input type="text" class="form-control" v-model="title" placeholder="输入文字标题">
@@ -18,9 +10,8 @@
       <div class="form-group">
         <button class="btn btn-default" v-on:click="submit">提交</button>
       </div>
-    </div>
-  </body>
-</html>
+      </div>
+  
 <script>
 var vm = new Vue({
   el: '#app',
@@ -30,14 +21,21 @@ var vm = new Vue({
   },
   methods: {
     submit () {
-    axios.post('/api/posts/create', //指定处理页面
+    axios.post('/api/v1/posts', //指定处理页面
       {
         title: vm.title,
         content: vm.content
       })
-      .then(function(response) {  //这段干嘛，输出字符串json数据？？
+      .then(function(response) {
+      return response.data;
+    })
+    .then(function(data) {  //可以通过服务端返回的post数据来打开刚刚创建的文章页面？？？
+      // 注意这句
+      window.location = '/posts/show?id=' + data.post._id;
+    })
+      /* .then(function(response) {  //这段干嘛，输出字符串json数据？？
         alert(JSON.stringify(response.data));
-      })
+      }) */
       .catch(function(err) {
         alert(err);
       })

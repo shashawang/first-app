@@ -1,0 +1,56 @@
+        <div class="col-md-8 col-md-offset-2">
+      <h1>新建文章</h1>
+      <div class="form-group">
+        <input type="text" class="form-control" v-model="title" placeholder="输入文字标题">
+      </div>
+      <div class="form-group">
+        <textarea class="form-control" rows="3" v-model="content" placeholder="输入文章内容"></textarea>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-default" v-on:click="submit">提交</button>
+      </div>
+      </div>
+    
+<script>
+  var postId = '<%= id %>';
+var vm = new Vue({
+  el: '#app',
+  data: {
+    title: '',
+    content: ''
+  },
+  created () {
+  axios.get('/api/v1/posts/:id?id=' + postId)
+    .then(function(response) {
+      vm.title = response.data.post.title;
+      vm.content = response.data.post.content;
+    })
+    .catch(function(err) {
+      alert(err);
+    })
+  },
+  methods: {
+    submit () {
+    axios.patch('/api/v1/posts' + postId, //指定处理页面
+      {
+        /* id: postId, */
+        title: vm.title,
+        content: vm.content
+      })
+      .then(function(response) {
+      return response.data;
+    })
+      .then(function(data) {
+      // 注意这里，用的是既有的postId来跳转到文章页面
+      window.location = '/posts/show?id=' + postId
+    })
+      /* .then(function(response) {  //这段干嘛，输出字符串json数据？？
+        alert(JSON.stringify(response.data));
+      }) */
+      .catch(function(err) {
+        alert(err);
+      })
+    }
+  }
+});
+</script>
