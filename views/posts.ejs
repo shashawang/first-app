@@ -1,4 +1,7 @@
-      <!-- Split button -->
+
+<div>
+    <% if(currentUser) { %>
+<!-- Split button -->
       <div class="btn-group pull-right">
           <button type="button" class="btn btn-default">操作</button>
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -9,6 +12,7 @@
             <li><a href="/posts/create">新建</a></li>
           </ul>
         </div>
+        <% } %>   <!--放错位置放在整段代码下面，首页就不能显示了-->
         <div class="col-md-8 col-md-offset-2">
       <h1><%= title %></h1>
       <p>Welcome to <%= title %></p>
@@ -19,7 +23,8 @@
       </ul>
       <!-- <p v-for="item in postsList">{{ item.title }}</p> -->
          </div>
-
+        </div>
+        
 
 <script>
   var vm = new Vue({

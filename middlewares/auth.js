@@ -1,4 +1,4 @@
-
+//检查登录状态
 var config = require('../config');
 var UserModel = require('../models/user');
 
