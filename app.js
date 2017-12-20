@@ -9,13 +9,17 @@ var bodyParser = require('body-parser');
 var expressLayouts = require('express-ejs-layouts');
 var config = require('./config'); 
 var auth = require('./middlewares/auth');
-
-var page = require('./route.page'); //注册路由和路由文件
-var api = require('./route.api');
 var favicons = require('connect-favicons');
 var express = require('express'),
 ipfilter = require('express-ipfilter').IpFilter; //为啥前面不用var,因为前面是逗号哈哈
+var connectMongodb = require('connect-mongo');
+var session = require('express-session')
+
+var page = require('./route.page'); //注册路由和路由文件
+var api = require('./route.api');
+var MongoStore = new connectMongodb(session);
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));  //注册视图和视图文件，绑定解析引擎
@@ -31,10 +35,25 @@ app.use(cookieParser(config.cookieName));
 app.use(favicons(__dirname + '/public/img/icons'));                                                          
 app.use(express.static(path.join(__dirname, 'public')));  //托管静态资源，唯一的express内置中间件
 
-
+app.use(
+  session({
+    secret: config.sessionSecret,
+    store: new MongoStore({
+      url: config.mongodbUrl
+    }),
+    resave: true,
+    saveUninitialized: true
+  })
+);
 app.use(auth.authUser);//是不是逗号写错了
-app.use('/', page);   //分析路由；挂载到对应id的中间件
-app.use('/api/v1', api);
+app.use('/', function(req, res, next){
+  console.log('process 1 = ' + req.path );
+  next();
+}, page);   //分析路由；挂载到对应id的中间件
+app.use('/api/v1', function(req, res, next){
+  console.log('process 2 = ' + req.path );
+  next();
+}, api);
 
 
 // catch 404 and forward to error handler
@@ -52,7 +71,18 @@ app.use(function(err, req, res, next) { //执行时调用view中的error文件�
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.format({
+    json() {
+      res.send({error: err.toString()});
+    },
+    html() {
+      res.render('error');
+    },
+    default() {
+      const message = '${errorDetails';
+      res.send('500 Internal server error:\n${err.toString()}');
+    },
+  });
 });
 
 module.exports = app;

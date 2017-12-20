@@ -3,6 +3,7 @@ var router = express.Router();
 var PostModel = require('./models/post');
 var marked = require('marked');
 var config = require('./config');
+var auth = require('./middlewares/auth');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -15,7 +16,7 @@ router.get('/posts', function(req, res, next) {
   });
 
 /* GET posts edit page. */
-router.get('/posts/create', function(req, res, next) {
+router.get('/posts/create', auth.adminRequired, function(req, res, next) {
   res.render('create');
 });
 
