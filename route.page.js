@@ -57,7 +57,9 @@ router.get('/signin', function (req, res, next) {
 /* GET signout */
 router.get('/signout', function (req, res, next) {
   res.clearCookie(config.cookieName, { path: '/' });
+  console.log("马上要退出啦");
   res.redirect('/');
+  console.log("出来了没");
 });
 
 module.exports = router;

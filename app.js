@@ -1,4 +1,8 @@
 //核心调度文件
+/* process.on('uncaughtException', function (err) {
+  console.log('Caught exception: ', err);
+}); //这段代码只有5min寿命 */
+
 require('./models/init'); //引入数据库和模块
 var express = require('express');
 var path = require('path');
@@ -13,13 +17,21 @@ var favicons = require('connect-favicons');
 var express = require('express'),
 ipfilter = require('express-ipfilter').IpFilter; //为啥前面不用var,因为前面是逗号哈哈
 var connectMongodb = require('connect-mongo');
-var session = require('express-session')
+var session = require('express-session');
+var domain = require('domain');
 
 var page = require('./route.page'); //注册路由和路由文件
 var api = require('./route.api');
 var MongoStore = new connectMongodb(session);
 var app = express();
 
+app.use(function (req, res, next) {
+  var reqDomain = domain.create();
+  reqDomain.on('error', function (err) { // 下面抛出的异常在这里被捕获
+      res.send(500, err.stack); // 成功给用户返回了 500
+  });
+  reqDomain.run(next);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));  //注册视图和视图文件，绑定解析引擎
@@ -66,6 +78,9 @@ app.use(function(req, res, next) { //没有挂载路径的中间件，应用的�
 // error handler
 app.use(function(err, req, res, next) { //执行时调用view中的error文件，在页面上打印错误信息；有四个参数；
   // set locals, only providing error in development    
+  /* var d = domain.create();
+  //监听domain的错误事件
+  d.on('error', function (err) { */
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
@@ -84,5 +99,6 @@ app.use(function(err, req, res, next) { //执行时调用view中的error文件�
     },
   });
 });
+/* }); */
 
 module.exports = app;

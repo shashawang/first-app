@@ -104,7 +104,7 @@ router.post('/signup', function(req, res, next) {
   var user = new UserModel();
   user.name = name;
   user.pass = bcrypt.hashSync(pass, 10);
-  user.save(function(err) {
+  user.save(function(err) { //两次密码填写一样，保存用户信息
     if (err) {
       next(err);
     } else {
@@ -125,7 +125,7 @@ router.post('/signin', function(req, res, next) {
       var isOk = bcrypt.compareSync(pass, user.pass);
       if (!isOk) {
         return next(new Error('密码不对'));
-      }
+      } 
 
       var authToken = user._id;
       var opts = {

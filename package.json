@@ -13,6 +13,8 @@
     "connect-mongo": "^2.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "domain": "0.0.1",
+    "domain-middleware": "^0.1.0",
     "ejs": "^2.5.7",
     "express": "~4.15.5",
     "express-ejs-layouts": "^2.3.1",
