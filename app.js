@@ -14,7 +14,7 @@ var expressLayouts = require('express-ejs-layouts');
 var config = require('./config'); 
 var auth = require('./middlewares/auth');
 var favicons = require('connect-favicons');
-var express = require('express'),
+var express = require('express')
 ipfilter = require('express-ipfilter').IpFilter; //为啥前面不用var,因为前面是逗号哈哈
 var connectMongodb = require('connect-mongo');
 var session = require('express-session');
@@ -24,14 +24,6 @@ var page = require('./route.page'); //注册路由和路由文件
 var api = require('./route.api');
 var MongoStore = new connectMongodb(session);
 var app = express();
-
-app.use(function (req, res, next) {
-  var reqDomain = domain.create();
-  reqDomain.on('error', function (err) { // 下面抛出的异常在这里被捕获
-      res.send(500, err.stack); // 成功给用户返回了 500
-  });
-  reqDomain.run(next);
-});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));  //注册视图和视图文件，绑定解析引擎
@@ -58,14 +50,8 @@ app.use(
   })
 );
 app.use(auth.authUser);//是不是逗号写错了
-app.use('/', function(req, res, next){
-  console.log('process 1 = ' + req.path );
-  next();
-}, page);   //分析路由；挂载到对应id的中间件
-app.use('/api/v1', function(req, res, next){
-  console.log('process 2 = ' + req.path );
-  next();
-}, api);
+app.use('/', page);   //分析路由；挂载到对应id的中间件
+app.use('/api/v1', api);
 
 
 // catch 404 and forward to error handler
