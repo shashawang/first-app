@@ -1,0 +1,22 @@
+<div>
+<!-- <% if(currentUser && currentUser._id.toString() === post.authorId.toString() ) { %> -->
+  <!--currentUser = user,_id = authToken,authToken同样在auth.js中有定义，是登录请求cookie配置文件中的cookiename？; -->
+<!-- Split button -->
+<!-- console.log([currentUser._id,post.authorId]) -->
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-default">操作</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="/posts/edit?id=<%= post._id %>">编辑</a></li>  <!--不会修改-->
+            </ul>
+          </div>
+          <!-- <% } %> -->
+        <div class="col-md-8 col-md-offset-2">
+      <h1><%= post.title %></h1>  <!--方便在路由中使用Post对象-->
+      <div><%- post.content %></div>
+        </div>
+      </div>
+      

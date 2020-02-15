@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "auto-start": "./node_modules/.bin/node-supervisor node ./bin/www"
+    "auto-start": "./node_modules/.bin/node-supervisor node ./bin/www",
+    "dev": "nodemon ./src/bin/www --exec \"node -r dotenv/config -r babel-register\"",
+    "clean": "rimraf dist",
+    "build": "npm run clean && mkdir -p dist && babel src -s -D -d dist"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
@@ -21,11 +24,20 @@
     "express-ipfilter": "^0.3.1",
     "express-session": "^1.15.6",
     "jsonfile": "3.0.1",
+    "jwt-simple": "^0.5.6",
     "marked": "^0.3.6",
     "mongoose": "^4.13.5",
     "morgan": "~1.9.0",
     "ramda": "^0.25.0",
     "serve-favicon": "~2.4.5",
     "supervisor": "^0.12.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "dotenv": "^4.0.0",
+    "nodemon": "^1.11.0",
+    "rimraf": "^2.6.1"
   }
 }
