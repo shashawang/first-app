@@ -13,7 +13,7 @@ var bodyParser = require('body-parser');
 var expressLayouts = require('express-ejs-layouts');
 var config = require('./config'); 
 var auth = require('./middlewares/auth');
-var favicons = require('connect-favicons');
+// var favicons = require('connect-favicons');
 var express = require('express'),
 ipfilter = require('express-ipfilter').IpFilter; //为啥前面不用var,因为前面是逗号哈哈
 var connectMongodb = require('connect-mongo');
@@ -36,7 +36,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json()); //第三方中间件；可以在package中找到；
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(config.cookieName));
-app.use(favicons(__dirname + '/public/img/icons'));                                                          
+// app.use(favicons(__dirname + '/public/img/icons'));                                                        
 app.use(express.static(path.join(__dirname, 'public')));  //托管静态资源，唯一的express内置中间件
 
 // app.use( 使用jwt替代session了

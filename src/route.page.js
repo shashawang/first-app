@@ -6,12 +6,12 @@ var config = require('./config');
 var auth = require('./middlewares/auth');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+// router.get('/', function(req, res, next) {
+//   res.render('index', { title: 'Express' });
+// });
 
 /* GET posts page. */
-router.get('/posts', function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.render('posts', { title: 'posts'} );
   });
 

@@ -4,6 +4,38 @@ var router = express.Router();
 var bcrypt = require('bcrypt');//bcrypt 这个库用来对密码做hash求值，将密码的 hash 值存在数据库中
 var UserModel = require('./models/user');
 var config = require('./config');
+var fs = require("fs");
+var path = require('path');
+// var remotePath = "./public/articles";
+var remotePath = "./src/public/articles";
+
+// function getPosts (dir) {
+  const files = fs.readdirSync(remotePath);
+  files.forEach(function(filename){
+    PostModel.find().where('title').equals(filename).exec(function (err, posts) {
+      if (!posts.length) {
+        console.log(posts)
+        // next(err);
+        var filedir = path.join(remotePath,filename);
+        fs.stat(filedir,function(err, stats){
+            if (err) throw err;
+            if(stats.isFile()){
+                let title = filename;
+                let content = fs.readFileSync(path.join(remotePath,filename), 'utf-8');
+                let post = new PostModel();
+                post.title = title;
+                post.content = content;
+                post.save(function (err, doc) {});
+            } else if(stats.isDirectory()){
+                return false
+            }
+        });
+      }
+    });
+  });
+  // PostModel.remove({title: '《用生活常识就能看懂财务报表》.md'})
+// };
+// getPosts(remotePath);
 
 //匹配路由和处理函数，还需要在调度文件中挂载该文件（调用app.use关联路由和该文件）
 /* GET users lists. */
@@ -13,6 +45,7 @@ router.get('/users', function(req, res, next) {//同理，没有挂载路径的�
 
 /* GET posts lists */
 router.get('/posts', function (req, res, next) {
+
   PostModel.find({}, {}, function (err, posts) {
     if (err) {
       next(err);
@@ -20,7 +53,7 @@ router.get('/posts', function (req, res, next) {
       res.json({ postsList: posts });
     }
   });
-});                                           
+});
 
 /* POST create post */  //接受数据保存到数据库里，不需要渲染，所以放到api路由里；但不和另一个create页面放一起，路由是不是不太对
 router.post('/posts', function(req, res, next) { 
@@ -49,18 +82,6 @@ router.post('/posts', function(req, res, next) {
   var content = req.body.content;
   res.send({title, content}); // 收到数据后，又把数据返回给了请求方
 }); */
-
-/* GET posts lists */ 
- router.get('/posts', function(req, res, next) {
-  PostModel.find({}, {}, function (err, posts) {
-    if (err) {
-      next(err);
-      return;
-    }
-
-    res.json({ postsList: posts });
-  });
-}) 
 
 /* GET one post */
 router.get('/posts/:id', function (req, res, next) {
