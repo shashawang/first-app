@@ -7,27 +7,36 @@
 var app = require('../src/app');
 var debug = require('debug')('first-app:server');
 var http = require('http');
+var https = require('https');
+var fs = require("fs");
+var privateKey  = fs.readFileSync('/first-app/certificate/wangshasha.cn.key', 'utf8');
+var certificate = fs.readFileSync('/first-app/certificate/wangshasha.cn.pem', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+var httpPort = normalizePort(process.env.PORT || '3000');
+var httpsPort = normalizePort(process.env.PORT || '3443');
+app.set('httpPort', httpPort);
+app.set('httpsPort', httpsPort);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+httpServer.listen(httpPort);
+httpsServer.listen(httpsPort);
+// server.on('error', onError);
+// server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
