@@ -10,7 +10,7 @@
     "build": "npm run clean && mkdir -p dist && babel src -s -D -d dist"
   },
   "dependencies": {
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^5.0.0",
     "body-parser": "~1.18.2",
     "connect-favicons": "git://github.com/theworkers/connect-favicons.git",
     "connect-mongo": "^2.0.0",
